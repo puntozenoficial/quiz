@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué emoción estás cargando en kilos de más? — Punto Zen</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; background: #FAF7F2; color: #2C1A0E; min-height: 100vh; padding: 2rem 1rem; }
+.quiz-wrap { max-width: 620px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 2.5rem 2rem; box-shadow: 0 2px 20px rgba(123,63,16,0.08); }
+.brand { color: #C97D4E; font-size: 12px; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-family: Arial, sans-serif; }
+.quiz-title { font-size: 26px; font-weight: normal; color: #7B3F10; margin-bottom: 10px; line-height: 1.3; }
+.quiz-sub { font-size: 15px; color: #6B4C30; line-height: 1.7; margin-bottom: 2rem; font-family: Arial, sans-serif; }
+.progress-bar { height: 4px; background: #F0E0D0; border-radius: 2px; margin-bottom: 2rem; }
+.progress-fill { height: 4px; background: #C97D4E; border-radius: 2px; transition: width 0.4s ease; }
+.q-label { font-size: 12px; color: #C97D4E; margin-bottom: 8px; font-family: Arial, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; }
+.q-text { font-size: 18px; color: #2C1A0E; margin-bottom: 1.5rem; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.opt-btn { background: #FAF7F2; border: 1px solid #E8D5C0; border-radius: 10px; padding: 14px 16px; text-align: left; cursor: pointer; font-size: 15px; color: #2C1A0E; line-height: 1.5; transition: border-color 0.15s, background 0.15s; font-family: Arial, sans-serif; }
+.opt-btn:hover { border-color: #C97D4E; background: #F5EFE6; }
+.opt-btn.selected { border-color: #7B3F10; background: #F5EFE6; color: #7B3F10; font-weight: bold; }
+.opt-letter { font-weight: bold; color: #C97D4E; margin-right: 8px; }
+.nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+.btn-next { background: #7B3F10; color: #fff; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; cursor: pointer; font-family: Arial, sans-serif; transition: opacity 0.15s; }
+.btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-next:hover:not(:disabled) { background: #5C2E08; }
+.btn-back { background: none; border: 1px solid #E8D5C0; border-radius: 8px; padding: 10px 18px; font-size: 14px; color: #6B4C30; cursor: pointer; font-family: Arial, sans-serif; }
+.btn-back:hover { background: #F5EFE6; }
+.result-badge { display: inline-block; background: #F5EFE6; color: #7B3F10; font-size: 12px; font-weight: bold; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+.result-title { font-size: 26px; color: #7B3F10; margin-bottom: 4px; }
+.result-sub { font-size: 13px; color: #C97D4E; margin-bottom: 1.5rem; font-family: Arial, sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; }
+.result-body { font-size: 15px; color: #2C1A0E; line-height: 1.8; background: #FAF7F2; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; border: 1px solid #E8D5C0; font-family: Arial, sans-serif; }
+.result-msg { font-size: 16px; color: #2C1A0E; line-height: 1.7; font-style: italic; margin-bottom: 2rem; padding-left: 16px; border-left: 3px solid #C97D4E; font-family: Arial, sans-serif; }
+.cta-box { background: #7B3F10; border-radius: 14px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; }
+.cta-pre { font-size: 12px; color: #F5C8A0; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; }
+.cta-title { font-size: 20px; color: #fff; margin-bottom: 8px; line-height: 1.4; }
+.cta-price { font-size: 13px; color: #F5C8A0; margin-bottom: 18px; font-family: Arial, sans-serif; }
+.cta-btn { display: inline-block; background: #C97D4E; color: #fff; border: none; border-radius: 8px; padding: 14px 32px; font-size: 16px; font-family: Arial, sans-serif; font-weight: bold; cursor: pointer; text-decoration: none; }
+.cta-btn:hover { background: #A8623A; }
+.divider { height: 1px; background: #E8D5C0; margin: 1.5rem 0; }
+.restart-btn { background: none; border: 1px solid #E8D5C0; border-radius: 8px; padding: 10px 20px; font-size: 13px; color: #6B4C30; cursor: pointer; display: block; margin: 0 auto; font-family: Arial, sans-serif; }
+.restart-btn:hover { background: #F5EFE6; }
+.footer { text-align: center; margin-top: 1.5rem; font-size: 12px; color: #C97D4E; font-family: Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div class="quiz-wrap">
+  <div id="quiz-screen">
+    <div class="brand">Punto Zen — Gabi</div>
+    <div class="quiz-title">¿Qué emoción estás cargando en kilos de más?</div>
+    <div class="quiz-sub">Este test no es un cuestionario — es una experiencia de reconocimiento. El resultado le da nombre a algo que sentías pero no podías articular. Comenzamos:</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    <div class="q-label" id="q-label">Pregunta 1 de 5</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="nav">
+      <button class="btn-back" id="btn-back" style="visibility:hidden">← Atrás</button>
+      <button class="btn-next" id="btn-next" disabled>Siguiente →</button>
+    </div>
+  </div>
+  <div id="result-screen" style="display:none"></div>
+</div>
+
+<script>
+const qs = [
+  {
+    text: "Cuando terminás una dieta y empezás a recuperar peso, ¿qué pensás primero?",
+    opts: [
+      ["A", "No tengo fuerza de voluntad. Soy un fracaso."],
+      ["B", "En el fondo me da miedo que si bajo de peso, algo cambie en mi vida."],
+      ["C", "Algo en mí sabotea todo. Es más fuerte que yo."],
+      ["D", "No entiendo qué me pasa. Hago todo bien y no funciona."]
+    ]
+  },
+  {
+    text: "¿En qué zona del cuerpo se concentran principalmente tus kilos de más?",
+    opts: [
+      ["A", "Abdomen y zona media (panza, cintura)"],
+      ["B", "Caderas, muslos y glúteos"],
+      ["C", "Espalda alta, brazos y parte superior del cuerpo"],
+      ["D", "Todo el cuerpo de forma pareja, sin zona definida"]
+    ]
+  },
+  {
+    text: "¿Cuándo notás que comés más allá del hambre real?",
+    opts: [
+      ["A", "Cuando estoy sola y siento un vacío interno que no sé cómo llenar"],
+      ["B", "Cuando tuve un conflicto o tensión con alguien importante para mí"],
+      ["C", "Cuando siento que no me reconocen, que mi esfuerzo no vale"],
+      ["D", "Cuando me siento amenazada, expuesta o en peligro emocional"]
+    ]
+  },
+  {
+    text: "Si imaginás que lograste tu peso ideal, ¿qué emoción aparece primero?",
+    opts: [
+      ["A", "Alegría, pero mezclada con miedo: ¿y si lo recupero de nuevo?"],
+      ["B", "Incomodidad: si estoy más delgada, me van a mirar más, me van a exigir más"],
+      ["C", "Duda profunda: ¿realmente me lo merezco? ¿Soy suficiente?"],
+      ["D", "Un vacío extraño: ¿qué excusa voy a tener para ciertas cosas de mi vida?"]
+    ]
+  },
+  {
+    text: "En tu historia de vida, ¿cuál de estas situaciones resuena más profundo en vos?",
+    opts: [
+      ["A", "Sentí que no fui suficientemente amada, valorada o vista por quienes importaban"],
+      ["B", "Tuve que protegerme o proteger a alguien. Aprendí a estar en guardia."],
+      ["C", "Viví situaciones donde no me sentía segura: física, emocional o económicamente"],
+      ["D", "Me costó mucho decir que no, poner límites. Siempre priorizaba a los demás."]
+    ]
+  }
+];
+
+const profiles = {
+  A: {
+    badge: "Perfil A — mayoría de respuestas A",
+    title: "Kilos de desvalorización",
+    sub: "Tu zona de acumulación: abdomen y zona media",
+    body: "Tu cuerpo construyó una armadura. Cuando no te sentís suficiente — para el trabajo, para el amor, para la vida — tu biología activa un mecanismo de protección: acumula reservas. No es debilidad. Es tu sistema nervioso cuidándote de la única forma que conocía. La grasa en la zona abdominal, desde la biodecodificación, frecuentemente está vinculada al conflicto de no sentirse merecedora, de necesitar más espacio emocional en el mundo.",
+    msg: "Lo que necesitás no es otra dieta. Es aprender a decirle a tu cuerpo: ya estoy segura, ya me merezco ocupar espacio. El ebook Cuando el cuerpo habla en Kilos te enseña exactamente cómo hacer ese trabajo interior."
+  },
+  B: {
+    badge: "Perfil B — mayoría de respuestas B",
+    title: "Kilos de protección",
+    sub: "Tu zona de acumulación: caderas y muslos",
+    body: "Tu cuerpo te está protegiendo. Cuando el mundo se siente demasiado exigente, demasiado mirado, demasiado peligroso — tu biología crea una barrera física. El peso actúa como escudo: si soy más grande, soy menos vulnerable. Si ocupo más espacio físico, estoy más segura. Desde la biodecodificación, la acumulación en caderas y muslos frecuentemente está ligada al conflicto de sentirse expuesta o en peligro de ser invadida.",
+    msg: "Tu cuerpo no es tu enemigo. Es tu guardián más fiel. El ebook Cuando el cuerpo habla en Kilos te muestra cómo agradecerle esa protección y decirle que ya no la necesitás de esta forma."
+  },
+  C: {
+    badge: "Perfil C — mayoría de respuestas C",
+    title: "Kilos de abandono",
+    sub: "Tu zona de acumulación: espalda alta y brazos",
+    body: "Tu cuerpo tiene miedo de perder. Cuando vivimos el miedo al abandono — real o imaginado — nuestra biología activa un programa de supervivencia: acumular reservas para los tiempos difíciles. La grasa en la parte superior del cuerpo, desde la biodecodificación, frecuentemente aparece ligada al conflicto de sentirse desamparada, de no tener quien te sostenga, de tener que hacerlo todo sola.",
+    msg: "No sos demasiado necesitada. Sos una persona que aprendió a sobrevivir sola y su cuerpo todavía lo recuerda. El ebook Cuando el cuerpo habla en Kilos te enseña a soltar esa memoria celular."
+  },
+  D: {
+    badge: "Perfil D — mayoría de respuestas D",
+    title: "Kilos de límites",
+    sub: "Tu zona de acumulación: distribución generalizada",
+    body: "Tu cuerpo dice lo que vos no podés decir. Cuando constantemente priorizás a los demás, cuando el no te parece imposible, cuando te borrás para que el otro esté bien — tu cuerpo empieza a ocupar más espacio en tu nombre. Desde la biodecodificación, la acumulación generalizada de peso frecuentemente está ligada al conflicto de los límites: el cuerpo se hace grande cuando la persona no puede serlo emocionalmente.",
+    msg: "El problema no es que comás de más. El problema es que todavía no aprendiste a decir que no. El ebook Cuando el cuerpo habla en Kilos te da las herramientas para hacerlo, desde el cuerpo y las emociones."
+  }
+};
+
+let current = 0, answers = [], selected = null;
+
+function getProfile(answers) {
+  const counts = { A: 0, B: 0, C: 0, D: 0 };
+  answers.forEach(a => counts[a]++);
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+function renderQuestion() {
+  const q = qs[current];
+  document.getElementById('q-label').textContent = 'Pregunta ' + (current + 1) + ' de ' + qs.length;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress').style.width = ((current / qs.length) * 100) + '%';
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-next').textContent = current === qs.length - 1 ? 'Ver mi resultado →' : 'Siguiente →';
+  selected = answers[current] || null;
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.opts.forEach(function(o) {
+    const letter = o[0], text = o[1];
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn' + (selected === letter ? ' selected' : '');
+    btn.innerHTML = '<span class="opt-letter">' + letter + '.</span>' + text;
+    btn.onclick = function() {
+      document.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      selected = letter;
+      document.getElementById('btn-next').disabled = false;
+    };
+    opts.appendChild(btn);
+  });
+  if (selected) document.getElementById('btn-next').disabled = false;
+}
+
+function showResult() {
+  const key = getProfile(answers);
+  const p = profiles[key];
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+  rs.innerHTML =
+    '<div class="brand">Tu resultado</div>' +
+    '<div class="result-badge">' + p.badge + '</div>' +
+    '<div class="result-title">' + p.title + '</div>' +
+    '<div class="result-sub">' + p.sub + '</div>' +
+    '<div class="result-body">' + p.body + '</div>' +
+    '<div class="result-msg">' + p.msg + '</div>' +
+    '<div class="cta-box">' +
+      '<div class="cta-pre">El siguiente paso natural</div>' +
+      '<div class="cta-title">Cuando el Cuerpo Habla en Kilos</div>' +
+      '<div class="cta-price">Ebook + 3 materiales complementarios &mdash; USD $17 &mdash; acceso inmediato</div>' +
+      '<a class="cta-btn" href="https://go.hotmart.com/M105146176O" target="_blank">Quiero el ebook</a>' +
+    '</div>' +
+    '<div class="divider"></div>' +
+    '<button class="restart-btn" onclick="restart()">Volver a hacer el test</button>' +
+    '<div class="footer">Punto Zen &mdash; Gabi &bull; @puntozen.oficial</div>';
+}
+
+function restart() {
+  current = 0; answers = []; selected = null;
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+}
+
+document.getElementById('btn-next').onclick = function() {
+  if (!selected) return;
+  answers[current] = selected;
+  if (current < qs.length - 1) { current++; renderQuestion(); }
+  else { showResult(); }
+};
+document.getElementById('btn-back').onclick = function() {
+  if (current > 0) { current--; renderQuestion(); }
+};
+
+renderQuestion();
+</script>
+</body>
+</html>
